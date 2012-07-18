@@ -1,0 +1,19 @@
+input.textbox {
+	border: 1px solid #9AC336;
+	font-family: monospace;
+	font-size: 15px;
+	height:35px;
+	background-color: whitesmoke;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background-color: whitesmoke;
+}
+
+input.button {
+	border: 1px solid #9AC336;
+	-moz-border-radius: 5px;
+    border-radius: 5px;
+    height:30px;
+    background-color: white;
+    cursor: pointer;
+}
