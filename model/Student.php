@@ -1,4 +1,7 @@
 <?php
+namespace business;
+
+use redis\RedisHashSet;
 require_once 'redis/RedisHashSet.php';
 
 class Student extends RedisHashSet {

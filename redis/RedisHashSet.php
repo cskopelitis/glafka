@@ -1,5 +1,7 @@
 <?php
-require_once 'RedisClient.php';
+namespace redis;
+
+require_once 'redis/RedisClient.php';
 
 class RedisHashSet extends RedisClient {
 

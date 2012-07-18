@@ -1,6 +1,11 @@
 <?php
-require_once '../redis/RedisHashSet.php';
-require_once '../notification/model/Channel.php';
+namespace security;
+
+use redis\RedisHashSet;
+use notification;
+
+require_once 'redis/RedisHashSet.php';
+require_once 'notification/model/Channel.php';
 
 /*
  * The basic user entity
@@ -46,6 +51,19 @@ class User extends RedisHashSet {
       $channels[$channelId]=new Channel($channelId);
     }
     return $channels;
+  }
+  
+  public static function initDb() {
+    $tmpUser=new User(1);
+    $tmpUser->setUsername('cskopelitis');
+    $tmpUser->password='1';
+    $tmpUser->addChannelId(1);
+    $tmpUser->addChannelId(2);
+    
+    $tmpUser=new User(2);
+    $tmpUser->setUsername('guest');
+    $tmpUser->password='guest';
+    
   }
 }
 ?>

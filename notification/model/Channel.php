@@ -1,5 +1,8 @@
 <?php
-require_once '../redis/RedisHashSet.php';
+namespace notification;
+
+use redis\RedisHashSet;
+require_once 'redis/RedisHashSet.php';
 
 class Channel extends RedisHashSet {
 

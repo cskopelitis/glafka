@@ -1,11 +1,20 @@
 <?php
-require_once '../redis/RedisClient.php';
-require_once '../security/model/User.php';
+namespace security;
+
+use \redis\RedisClient;
+require_once 'redis/RedisClient.php';
+use conf;
+require_once 'conf/app.conf.php';
+require_once 'security/model/User.php';
 
 class AuthenticationModule extends RedisClient {
 
   const UNKNOWN_USER=-100;
   const AUTH_FAILED=-200;
+
+  public function __construct(){
+    parent::__construct();
+  }
 
   public function authorize($username,$providedPassword){
     $internalUserId=$this->redis->get($username);
