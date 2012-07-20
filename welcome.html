@@ -3,36 +3,44 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> -->
-<!-- <script type="text/javascript" src="scripts/md5generator.js"></script> -->
-<!-- <script type="text/javascript">
-// 	function submit() {
-// 		// 	var form=document.forms[0];
-// 		var username = document.getElementById('username');
-// 		var password = document.getElementById('password');
+<script type="text/javascript" src="scripting/md5generator.js"></script>
+<script type="text/javascript">
+	function submit() {
+		var username = document.getElementById('username').value;
+		var password = document.getElementById('password').value;
 
-// 		var passwordEncr = new MD5(password);
-// 		document.location = 'authenticate.php?username=' + username
-// 				+ '&password=' + passwordEncr;
-// 	}
-</script>  -->
+		var passwordEncr = MD5(password);
+		document.location = 'authenticate.php?username=' + username
+				+ '&password=' + passwordEncr;
+	}
+</script>
 <link rel="stylesheet" href="styles/controls.css" type="text/css" />
 <title>Glafka.gr - Welcome</title>
 </head>
 <body>
-    <form id="login" method="get" action="authenticate.php">
-        <div style="position: absolute; border: 1px solid black">
-            <table cellpadding="10px">
-                <tr>
-                    <td><input class="textbox" style="width: 250px" name="username" type="text" /></td>
-                </tr>
-                <tr>
-                    <td><input class="textbox" style="width: 250px" name="password" type="password" /></td>
-                </tr>
-                <tr>
-                    <td style="text-align: right;"><input class="button" type="submit" value="  Είσοδος  "/></td>
-                </tr>
-            </table>
-        </div>
-    </form>
+  <div style="position: absolute; left: 15%; top: 25%;">
+    <img src="http://www.how-to-draw-funny-cartoons.com/image-files/cartoon-owl-3f.gif" />
+  </div>
+  <!--   <form id="login" method="get" action="authenticate.php"> -->
+  <div style="position: absolute; left: 50%; top: 30%;">
+    <table style="font-family: sans-serif; font-size: 12px" cellpadding="5px" cellspacing="5px">
+      <tr>
+        <td style="font-family: monospace; font-size: 25px">Είσοδος</td>
+      </tr>
+      <tr>
+        <td><input class="textbox" style="width: 250px" id="username" type="text" /></td>
+      </tr>
+      <tr>
+        <td><input class="textbox" style="width: 250px" id="password" type="password" /></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" name="rememberme" />remember me</td>
+      </tr>
+      <tr>
+        <td style="text-align: right;"><input class="button" type="submit" value="  Είσοδος  " onclick="submit();" /></td>
+      </tr>
+    </table>
+  </div>
+  <!--   </form> -->
 </body>
 </html>

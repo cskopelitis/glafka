@@ -21,49 +21,52 @@ require_once 'notification/model/Channel.php';
 */
 class User extends RedisHashSet {
 
-  public function __construct($id){
-    parent::__construct('usr' . $id);
+ public function __construct($id){
+  parent::__construct('usr' . str_replace('usr','',$id));
+ }
+
+ public function addChannelId($channelId){
+  $channelIds=$this->channelIds;
+  if($channelIds==null){
+   $this->channelIds=$channelId;
+  }
+  else{
+   $this->channelIds=$channelIds . ',' . $channelId;
+  }
+ }
+
+ public function setUsername($username){
+  $this->username=$username;
+  $this->redis->set($username,$this->getObjectId());
+ }
+
+ public function setPassword($password) {
+  $this->password=md5($password);
+ }
+
+ public function getChannels() {
+  $channelIds=$this->channelIds;
+  if($channelIds==null){
+   return array();
   }
 
-  public function addChannelId($channelId){
-    $channelIds=$this->channelIds;
-    if($channelIds==null){
-      $this->channelIds=$channelId;
-    }
-    else{
-      $this->channelIds=$channelIds . ',' . $channelId;
-    }
+  $channels=array();
+  foreach(split(',', $channelIds) as $channelId){
+   $channels[$channelId]=new Channel($channelId);
   }
+  return $channels;
+ }
 
-  public function setUsername($username){
-    $this->username=$username;
-    $this->redis->set($username,$this->getObjectId());
-  }
+ public static function initDb() {
+  $tmpUser=new User(1);
+  $tmpUser->setUsername('cskopelitis');
+  $tmpUser->setPassword('1');
+  $tmpUser->addChannelId(1);
+  $tmpUser->addChannelId(2);
 
-  public function getChannels() {
-    $channelIds=$this->channelIds;
-    if($channelIds==null){
-      return array();
-    }
+  $tmpUser=new User(2);
+  $tmpUser->setUsername('guest');
+  $tmpUser->setPassword('guest');
 
-    $channels=array();
-    foreach(split(',', $channelIds) as $channelId){
-      $channels[$channelId]=new Channel($channelId);
-    }
-    return $channels;
-  }
-  
-  public static function initDb() {
-    $tmpUser=new User(1);
-    $tmpUser->setUsername('cskopelitis');
-    $tmpUser->password='1';
-    $tmpUser->addChannelId(1);
-    $tmpUser->addChannelId(2);
-    
-    $tmpUser=new User(2);
-    $tmpUser->setUsername('guest');
-    $tmpUser->password='guest';
-    
-  }
+ }
 }
-?>
