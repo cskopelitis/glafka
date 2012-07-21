@@ -1,6 +1,9 @@
 <?php
 namespace security;
 
+use logger\Logger;
+require_once 'util/Logger.php';
+
 use \redis\RedisClient;
 require_once 'redis/RedisClient.php';
 require_once 'security/model/User.php';
@@ -16,24 +19,21 @@ class AuthenticationModule extends RedisClient {
  }
 
  public function authorize($username,$providedPassword){
-  $firephp = \FirePHP::getInstance(true);
   $internalUserId=$this->redis->get($username);
-
-  $firephp->log('$providedPassword=' . $providedPassword);
   
   // check if there IS a user by this username
   if($internalUserId==null){
-   return $this::UNKNOWN_USER;
+   return self::UNKNOWN_USER;
   }
 
   $user=new User($internalUserId);
   $userPassword=$user->password;
   
   if($userPassword==null || $userPassword!==$providedPassword ){
-   return $this::AUTH_FAILED;
+   return self::AUTH_FAILED;
   }
 
-  return $this::OK;
+  return self::OK;
  }
 
  private function initUserSession($internalUserId) {

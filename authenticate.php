@@ -1,11 +1,4 @@
 <?php
-/********* Debug ***********/
-// http://thinkvitamin.com/code/how-to-debug-in-php/
-ini_set('display_errors', 'On');
-error_reporting(E_ALL | E_STRICT);
-require_once('FirePHPCore/FirePHP.class.php');
-/***************************/
-
 use security\AuthenticationModule;
 require_once 'security/AuthenticationModule.php';
 
