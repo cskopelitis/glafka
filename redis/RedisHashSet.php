@@ -3,34 +3,30 @@ namespace redis;
 
 require_once 'redis/RedisClient.php';
 
-class RedisHashSet extends RedisClient {
+abstract class RedisHashSet extends RedisClient {
 
-  protected $objectId;
+  private $id;
 
-  public function __construct($objectId){
-    parent::__construct();
-    $this->objectId=$objectId;
+  protected function __construct($id){
+    $this->id=$id;
   }
 
-  public function getObjectId() {
-    return $this->objectId;
+  public function getId() {
+    return $this->id;
+  }
+  
+  public abstract function getIdPrefix();
+
+  private function buildKey(){
+    return $this->getIdPrefix() . $this->id;
   }
 
   public function __get($key){
-    return $this->redisGet($key);
+    return parent::getInstance()->hget(self::buildKey(),$key);
   }
 
   public function __set($key,$value){
-    $this->redisSet($key, $value);
-  }
-
-  private function redisGet($key){
-    return $this->redis->hget($this->objectId,$key);
-  }
-
-  private function redisSet($key,$value){
-    return $this->redis->hset($this->objectId,$key,$value);
+    parent::getInstance()->hset(self::buildKey(),$key,$value);
   }
 
 }
-?>

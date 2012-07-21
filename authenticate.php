@@ -1,19 +1,20 @@
 <?php
-use security\AuthenticationModule;
-require_once 'security/AuthenticationModule.php';
+require_once 'notification/Plexus.php';
+require_once 'exception/AuthenticationException.php';
 
-$providedUsername=$_GET['username'];
-$providedPassword=$_GET['password'];
+$username=$_GET['username'];
+$password=$_GET['password'];
 
-if($providedUsername!=null && $providedPassword!=null){
- $authMod=new AuthenticationModule();
-
- $targetPage='login.php?loginFailed';
- if($authMod->authorize($providedUsername, $providedPassword)>0){
-  $targetPage='dashboard.php';
- }
-
- header('Location: ' . $targetPage);
-
- exit;
+$targetPage='login.php?loginFailed';
+if($username && $password) {
+  try{
+    \plexus\Plexus::instruct()->requestJoin($username,$password);
+    $targetPage='dashboard.php';
+  }catch (\exception\AuthenticationException $ae){
+    $targetPage . '&reason=' . $ae->getExitCode();
+  }
 }
+
+header('Location: ' . $targetPage);
+
+exit;

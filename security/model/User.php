@@ -2,9 +2,8 @@
 namespace security;
 
 use redis\RedisHashSet;
-use notification;
-
 require_once 'redis/RedisHashSet.php';
+use notification;
 require_once 'notification/model/Channel.php';
 
 /*
@@ -21,52 +20,49 @@ require_once 'notification/model/Channel.php';
 */
 class User extends RedisHashSet {
 
- public function __construct($id){
-  parent::__construct('usr' . str_replace('usr','',$id));
- }
-
- public function addChannelId($channelId){
-  $channelIds=$this->channelIds;
-  if($channelIds==null){
-   $this->channelIds=$channelId;
-  }
-  else{
-   $this->channelIds=$channelIds . ',' . $channelId;
-  }
- }
-
- public function setUsername($username){
-  $this->username=$username;
-  $this->redis->set($username,$this->getObjectId());
- }
-
- public function setPassword($password) {
-  $this->password=md5($password);
- }
-
- public function getChannels() {
-  $channelIds=$this->channelIds;
-  if($channelIds==null){
-   return array();
+  public function __construct($id){
+    parent::__construct($id);
   }
 
-  $channels=array();
-  foreach(split(',', $channelIds) as $channelId){
-   $channels[$channelId]=new Channel($channelId);
+  public function getIdPrefix() {
+    return '';
   }
-  return $channels;
- }
 
- public static function initDb() {
-  $tmpUser=new User(1);
-  $tmpUser->setUsername('cskopelitis');
-  $tmpUser->setPassword('1');
-  $tmpUser->addChannelId(1);
-  $tmpUser->addChannelId(2);
+  public function addChannelId($channelId){
+    $channelIds=$this->channelIds;
+    if($channelIds==null){
+      $this->channelIds=$channelId;
+    }
+    else{
+      $this->channelIds=$channelIds . ',' . $channelId;
+    }
+  }
 
-  $tmpUser=new User(2);
-  $tmpUser->setUsername('guest');
-  $tmpUser->setPassword('guest');
+  public function setPassword($password) {
+    $this->password=md5($password);
+  }
 
- }
+  public function getChannels() {
+    $channelIds=$this->channelIds;
+    if($channelIds==null){
+      return array();
+    }
+
+    $channels=array();
+    foreach(split(',', $channelIds) as $channelId){
+      $channels[$channelId]=new Channel($channelId);
+    }
+    return $channels;
+  }
+
+  public static function initDb() {
+    $tmpUser=new User('cskopelitis');
+    $tmpUser->setPassword('1');
+    $tmpUser->addChannelId(1);
+    $tmpUser->addChannelId(2);
+
+    $tmpUser=new User('guest');
+    $tmpUser->setPassword('guest');
+
+  }
 }

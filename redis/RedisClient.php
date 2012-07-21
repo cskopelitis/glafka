@@ -8,13 +8,26 @@ require_once 'conf/app.conf.php';
 
 use Predis\Autoloader;
 
-abstract class RedisClient {
+class RedisClient {
 
-  protected $redis;
+  private static $_instance;
 
-  protected function __construct(){
+  private $redis;
+
+  private function __construct(){
     Autoloader::register();
     $this->redis=new \Predis\Client($GLOBALS['redis.url']);
+  }
+
+  public static function getInstance() {
+    if(!self::$_instance){
+      self::$_instance=new RedisClient();
+    }
+    return self::$_instance;
+  }
+
+  public function __call($method,$arguments){
+    return $this->redis->__call($method, $arguments);
   }
 
 }

@@ -13,6 +13,10 @@ class Logger {
     self::getInstance()->log($message);
   }
 
+  public static function var_dump($variableName,$variable){
+    self::getInstance()->dump($variableName, $variable);
+  }
+
   private static function getInstance() {
     if(self::$firephp==null){
       self::$firephp=\FirePHP::getInstance(true);

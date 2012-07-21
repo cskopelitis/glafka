@@ -3,43 +3,36 @@ namespace security;
 
 use logger\Logger;
 require_once 'util/Logger.php';
-
 use \redis\RedisClient;
 require_once 'redis/RedisClient.php';
+use exception\AuthenticationException;
+require_once 'exception/AuthenticationException.php';
+
 require_once 'security/model/User.php';
 
 class AuthenticationModule extends RedisClient {
+  private static $_instance;
 
- const OK=100;
- const UNKNOWN_USER=-100;
- const AUTH_FAILED=-200;
-
- public function __construct(){
-  parent::__construct();
- }
-
- public function authorize($username,$providedPassword){
-  $internalUserId=$this->redis->get($username);
-  
-  // check if there IS a user by this username
-  if($internalUserId==null){
-   return self::UNKNOWN_USER;
+  private function __construct(){
   }
 
-  $user=new User($internalUserId);
-  $userPassword=$user->password;
-  
-  if($userPassword==null || $userPassword!==$providedPassword ){
-   return self::AUTH_FAILED;
+  public static function getInstance(){
+    if(!self::$_instance){
+      self::$_instance=new AuthenticationModule();
+    }
+    return self::$_instance;
   }
 
-  return self::OK;
- }
+  public function authorize($user,$providedPassword){
+    $userPassword=$user->password;
+    Logger::var_dump('userPassword', $userPassword);
 
- private function initUserSession($internalUserId) {
-  // update active sessions
-  // update session variables
-  $_SESSION['userId']=$internalUserId;
- }
+    if($userPassword==null){
+      throw new AuthenticationException(AuthenticationException::UNKNOWN_USER);
+    }
+    else if($userPassword!==$providedPassword ){
+      throw new AuthenticationException(AuthenticationException::AUTH_FAILED);
+    }
+  }
 
 }

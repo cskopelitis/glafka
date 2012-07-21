@@ -9,7 +9,11 @@ class Channel extends RedisHashSet {
   //   private $name;
 
   public function __construct($id){
-    parent::__construct('ch' . $id);
+    parent::__construct($id);
+  }
+
+  public function getIdPrefix() {
+    return 'ch';
   }
 
   public static function initDb(){
