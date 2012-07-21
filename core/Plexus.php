@@ -7,8 +7,8 @@ require_once 'util/Logger.php';
 use redis\RedisClient;
 require_once 'redis/RedisClient.php';
 
-use services\session\Session;
-require_once 'notification/model/Session.php';
+use security\Session;
+require_once 'security/model/Session.php';
 
 use security\AuthenticationModule;
 require_once 'security/AuthenticationModule.php';

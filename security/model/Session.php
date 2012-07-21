@@ -1,5 +1,5 @@
 <?php
-namespace services\session;
+namespace security;
 
 use logger\Logger;
 require_once 'util/Logger.php';

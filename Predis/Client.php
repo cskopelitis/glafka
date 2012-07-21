@@ -11,6 +11,9 @@
 
 namespace Predis;
 
+use logger\Logger;
+require_once 'util/Logger.php';
+
 use Predis\Commands\ICommand;
 use Predis\Options\IClientOptions;
 use Predis\Network\IConnection;
@@ -215,6 +218,8 @@ class Client
      */
     public function __call($method, $arguments)
     {
+      Logger::var_dump('method',$method);
+      Logger::var_dump('arguments',$arguments);
         $command = $this->profile->createCommand($method, $arguments);
         return $this->connection->executeCommand($command);
     }

@@ -1,5 +1,5 @@
 <?php
-require_once 'notification/Plexus.php';
+require_once 'core/Plexus.php';
 require_once 'exception/AuthenticationException.php';
 
 $username=$_GET['username'];
