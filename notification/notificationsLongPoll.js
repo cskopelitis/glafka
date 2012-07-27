@@ -1,12 +1,18 @@
 (function poll() {
 	$.ajax({
-		url : "/glafka/notification-stream.php",
+		url : "notification-stream.php",
 		success : function(notifications) {
-			for (notification in notifications) {
+			if (notifications.lenght>0) {
+				alert('You have ' + notifications.length + ' notification(s)');
+				// for (notification in notifications) {
+				// }
 			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(errorThrown);
 		},
 		dataType : "json",
 		complete : poll,
-		timeout : 30000
+		timeout : 60000
 	});
 })();
