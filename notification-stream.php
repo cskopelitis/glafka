@@ -7,16 +7,18 @@ require_once 'security/model/User.php';
 use logger\Logger;
 require_once 'util/Logger.php';
 
-$username = $_SESSION['username'];
+$username = $_GET['username'];
+Logger::var_dump('username', $username);
+
 if(!$username){
- // 204: no-content
+    // 204: no-content
 }
 
 $user=new User($username);
 $notificationsJsonArray=$user->notifications;
 
 if(!$notificationsJsonArray){
- echo '[]';
+    echo '[]';
 } else {
- echo $notificationsJsonArray;
+    echo $notificationsJsonArray;
 }
